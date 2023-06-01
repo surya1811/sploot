@@ -11,8 +11,7 @@ connectToDatabase();
 app.use(express.json());
 
 // Mount routes
-app.use('/api', userRoutes);
-app.use('/api', articleRoutes);
+app.use('/api', userRoutes,articleRoutes);
 
 // Define the port number
 const port = process.env.PORT || 3000;

@@ -69,5 +69,36 @@ const login = async (req, res) => {
     sendErrorResponse(res, 500, 'Internal server error');
   }
 };
-
-module.exports = { signup, login };
+const updateProfile = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { name, age } = req.body;
+      const user = await User.findOneAndUpdate(
+        { _id: userId },
+        { $set: { name, age } },
+        { new: true }
+      );
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+    return  res.json({
+        statusCode: 200,
+        data: {
+          user,
+        },
+        error: null,
+        message: 'User profile updated successfully',
+      });
+    } catch (error) {
+        res.status(500).json({
+            statusCode: 500,
+            data: null,
+            error: 'Internal server error',
+            message: 'Failed to Update User Profile',
+          });
+    }
+  };
+  
+  module.exports = { signup, login, updateProfile };
+  
