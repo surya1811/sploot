@@ -19,6 +19,10 @@ const createArticle = async (req, res) => {
       return sendErrorResponse(res, 404, 'User not found');
     }
 
+  const existingArticle=await Article.findOne({title});
+  if(existingArticle){
+    return sendErrorResponse(res, 409, 'Article already exists');
+  }
     // Create the article
     const article = new Article({ title, description, author: userId });
     await article.save()
